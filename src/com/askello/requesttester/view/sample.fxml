@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.askello.requesttester.controller.Controller">
+   <children>
+      <TextField fx:id="url" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="435.0" text="http://purysh.com/index.php?route=mobile/mobile/login" />
+      <Button fx:id="runButton" layoutX="466.0" layoutY="14.0" mnemonicParsing="false" onAction="#runHandler" prefHeight="25.0" prefWidth="120.0" text="Run" />
+      <TextArea fx:id="outputArea" layoutX="15.0" layoutY="186.0" prefHeight="200.0" prefWidth="570.0" wrapText="true" />
+   </children>
+</AnchorPane>
