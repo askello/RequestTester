@@ -29,9 +29,11 @@ public class Controller {
     @FXML
     public void runHandler() throws IOException, ParseException {
         HashMap<String, String> outputData = new HashMap<String, String>();
+        outputData.put("action", "getProducts");
         outputData.put("language", "ru");
-        outputData.put("login", "askello@ukr.net");
-        outputData.put("password", "12345");
+        outputData.put("mtoken", "kvt4sgi1fnuj4s5h2rjoj42g44");
+        //outputData.put("login", "askello@ukr.net");
+        //outputData.put("password", "123456");
 
         String serverResponse = Server.doRequestAndGetResponse(url.getText(), outputData);
 
