@@ -39,7 +39,7 @@ public class Server
         out.close();
 
         // get data from server
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
         String inputData = "", line = null;
         while ((line = in.readLine()) != null)
             inputData += line;

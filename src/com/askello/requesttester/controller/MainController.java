@@ -5,18 +5,17 @@ import com.askello.requesttester.library.Server;
 import com.askello.requesttester.model.Param;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+
+/*
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+*/
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainController {
@@ -57,7 +56,7 @@ public class MainController {
     }
 
     @FXML
-    public void runHandler() throws IOException, ParseException {
+    public void runHandler() throws IOException {
         HashMap<String, String> outputData = new HashMap<String, String>();
 
         for(Param param : dataParams)
@@ -104,6 +103,10 @@ public class MainController {
         valueColumn.setCellValueFactory(new PropertyValueFactory<Param, String>("value"));
         dataTable.setItems(dataParams);
         dataTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedData = (Param)newValue);
+
+        dataParams.add(new Param("action", "getCategories"));
+        dataParams.add(new Param("language", "ru"));
+        dataParams.add(new Param("mtoken", "8ht2mdu0b4dpqa313kide98ab7"));
     }
 
     public void setMainApp(MainApp mainApp) {
