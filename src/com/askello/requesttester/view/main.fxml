@@ -34,7 +34,7 @@
         </rowConstraints>
          <children>
             <Button fx:id="runButton" mnemonicParsing="false" onAction="#runHandler" prefHeight="25.0" prefWidth="120.0" text="Run" GridPane.columnIndex="1" />
-            <TextField fx:id="url" prefHeight="25.0" prefWidth="365.0" text="http://purysh.com/index.php?route=mobile/mobile" />
+            <TextField fx:id="url" prefHeight="25.0" prefWidth="365.0" text="http://purysh.com/api" />
          </children>
          <GridPane.margin>
             <Insets left="15.0" right="15.0" />

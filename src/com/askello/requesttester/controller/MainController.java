@@ -3,17 +3,17 @@ package com.askello.requesttester.controller;
 import com.askello.requesttester.MainApp;
 import com.askello.requesttester.library.Server;
 import com.askello.requesttester.model.Param;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-/*
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-*/
+
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -64,12 +64,16 @@ public class MainController {
 
         String serverResponse = Server.doRequestAndGetResponse(url.getText(), outputData);
 
-        outputArea.setText(serverResponse);
+        //outputArea.setText(serverResponse);
 
-        //JSONParser parser = new JSONParser();
-        //JSONObject jsonObject = (JSONObject) parser.parse(serverResponse);
-        //JSONArray jsonArray = (JSONArray) parser.parse(serverResponse);
-        //outputArea.setText(jsonObject.get("message").toString());
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+            JsonParser jp = new JsonParser();
+            JsonElement je = jp.parse(serverResponse);
+            outputArea.setText(gson.toJson(je));
+        } catch (Exception e) {
+            outputArea.setText(serverResponse);
+        }
     }
 
     @FXML
@@ -104,9 +108,10 @@ public class MainController {
         dataTable.setItems(dataParams);
         dataTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedData = (Param)newValue);
 
-        dataParams.add(new Param("action", "getCategories"));
+        dataParams.add(new Param("action", "crowdfunding/donaters"));
         dataParams.add(new Param("language", "ru"));
-        dataParams.add(new Param("mtoken", "8ht2mdu0b4dpqa313kide98ab7"));
+        dataParams.add(new Param("mtoken", "8s0e3u563mostjvtdrs107pll0"));
+        dataParams.add(new Param("crowdfunding", "53"));
     }
 
     public void setMainApp(MainApp mainApp) {
