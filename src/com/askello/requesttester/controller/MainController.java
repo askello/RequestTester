@@ -1,6 +1,7 @@
 package com.askello.requesttester.controller;
 
 import com.askello.requesttester.MainApp;
+import com.askello.requesttester.library.FileLoader;
 import com.askello.requesttester.library.Server;
 import com.askello.requesttester.model.Param;
 import com.google.gson.Gson;
@@ -14,8 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
-
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 
 public class MainController {
@@ -57,6 +58,7 @@ public class MainController {
 
     @FXML
     public void runHandler() throws IOException {
+        /*
         HashMap<String, String> outputData = new HashMap<String, String>();
 
         for(Param param : dataParams)
@@ -73,6 +75,24 @@ public class MainController {
             outputArea.setText(gson.toJson(je));
         } catch (Exception e) {
             outputArea.setText(serverResponse);
+        }
+        */
+
+
+        final File uploadFile = new File("logo.png");
+        try {
+            final FileLoader http = new FileLoader (new URL(url.getText()));
+            http.addFormField("action", "test/test");
+            http.addFormField("language", "ru");
+            http.addFilePart("image", uploadFile);
+            final byte[] bytes = http.finish();
+            OutputStream os = new FileOutputStream("someoutput.txt");
+            os.write(bytes);
+            os.close();
+
+            outputArea.setText(new BufferedReader(new FileReader("someoutput.txt")).readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
