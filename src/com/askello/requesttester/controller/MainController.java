@@ -2,7 +2,7 @@ package com.askello.requesttester.controller;
 
 import com.askello.requesttester.MainApp;
 import com.askello.requesttester.library.FileLoader;
-import com.askello.requesttester.library.Server;
+import com.askello.requesttester.library.request.Request;
 import com.askello.requesttester.model.Param;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,41 +58,54 @@ public class MainController {
 
     @FXML
     public void runHandler() throws IOException {
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        for(Param param : dataParams)
+            params.put(param.getKey(), param.getValue());
+
+        HashMap<String, File> files = new HashMap<String, File>();
+        files.put("image", new File("logo.png"));
+
+        //String response = Server.doRequestAndGetResponse(url.getText(), outputData);
+
+
+
+        /*
+        final File uploadFile = new File("logo.jpg");
+
+        final FileLoader http = new FileLoader (new URL(url.getText()));
+        http.addFormField("action", "test/test");
+        http.addFormField("language", "ru");
+        http.addFilePart("image", uploadFile);
+        final byte[] bytes = http.finish();
+
+        String response = new String(bytes);
+        */
+
         /*
         HashMap<String, String> outputData = new HashMap<String, String>();
-
         for(Param param : dataParams)
             outputData.put(param.getKey(), param.getValue());
 
-        String serverResponse = Server.doRequestAndGetResponse(url.getText(), outputData);
+        Request request = new Request();
+        request.setUrl(url.getText());
+        request.addParams(outputData);
+        request.addFile("image", "logo.jpg");
+        request.execute();
+        String response = request.getResponse();
 
-        //outputArea.setText(serverResponse);
+        System.out.println(response);
+        */
+
+        String response = Request.MULTIPART(url.getText(), params, files);
 
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
             JsonParser jp = new JsonParser();
-            JsonElement je = jp.parse(serverResponse);
+            JsonElement je = jp.parse(response);
             outputArea.setText(gson.toJson(je));
         } catch (Exception e) {
-            outputArea.setText(serverResponse);
-        }
-        */
-
-
-        final File uploadFile = new File("logo.png");
-        try {
-            final FileLoader http = new FileLoader (new URL(url.getText()));
-            http.addFormField("action", "test/test");
-            http.addFormField("language", "ru");
-            http.addFilePart("image", uploadFile);
-            final byte[] bytes = http.finish();
-            OutputStream os = new FileOutputStream("someoutput.txt");
-            os.write(bytes);
-            os.close();
-
-            outputArea.setText(new BufferedReader(new FileReader("someoutput.txt")).readLine());
-        } catch (IOException e) {
-            e.printStackTrace();
+            outputArea.setText(response);
         }
     }
 
@@ -111,6 +124,7 @@ public class MainController {
             dataParams.set(index, newParam);
         }
     }
+
     @FXML
     private void removeDataButtonHandler() {
         dataParams.remove(selectedData);
@@ -128,10 +142,9 @@ public class MainController {
         dataTable.setItems(dataParams);
         dataTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> selectedData = (Param)newValue);
 
-        dataParams.add(new Param("action", "crowdfunding/donaters"));
+        dataParams.add(new Param("action", "test/test"));
         dataParams.add(new Param("language", "ru"));
-        dataParams.add(new Param("mtoken", "8s0e3u563mostjvtdrs107pll0"));
-        dataParams.add(new Param("crowdfunding", "53"));
+        //dataParams.add(new Param("mtoken", "8s0e3u563mostjvtdrs107pll0"));
     }
 
     public void setMainApp(MainApp mainApp) {
