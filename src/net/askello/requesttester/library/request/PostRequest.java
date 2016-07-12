@@ -1,4 +1,4 @@
-package com.askello.requesttester.library.request;
+package net.askello.requesttester.library.request;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -17,7 +17,7 @@ public class PostRequest extends Request {
     @Override
     public void sendData() throws IOException {
         OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
-        out.write(urlEncodedParams());
+        out.write(encodeMapToUrl(params));
         out.close();
     }
 

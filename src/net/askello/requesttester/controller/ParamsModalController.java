@@ -1,11 +1,11 @@
-package com.askello.requesttester.controller;
+package net.askello.requesttester.controller;
 
-import com.askello.requesttester.model.Param;
+import net.askello.requesttester.model.Param;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class DataModalController {
+public class ParamsModalController {
 
     @FXML
     private TextField keyField;

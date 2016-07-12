@@ -1,10 +1,8 @@
-package com.askello.requesttester.library.request;
+package net.askello.requesttester.library.request;
 
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
-
-import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by user_5 on 24.06.2016.
@@ -18,7 +16,6 @@ public abstract class Request {
     protected String response;
 
     protected String charset;
-    protected final String CRLF = "\r\n";
 
     protected HttpURLConnection connection;
 
@@ -77,6 +74,10 @@ public abstract class Request {
         this.files = files;
     }
 
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
     public void execute() throws IOException {
         // start connection
         setUpConnection();
@@ -108,10 +109,10 @@ public abstract class Request {
         this.response = inputData;
     }
 
-    public String urlEncodedParams() throws IOException {
+    public String encodeMapToUrl(HashMap<String, String> data) throws IOException {
         String encodedString = "";
 
-        for(HashMap.Entry<String, String> entry : params.entrySet())
+        for(HashMap.Entry<String, String> entry : data.entrySet())
         {
             String key = entry.getKey();
             String value = entry.getValue();

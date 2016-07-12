@@ -1,4 +1,4 @@
-package com.askello.requesttester.library.request;
+package net.askello.requesttester.library.request;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ public class GetRequest extends Request {
 
     @Override
     protected void setUpConnection() throws IOException {
-        setUrl(url + "?" + urlEncodedParams());
+        setUrl(url + "?" + encodeMapToUrl(params));
 
         super.setUpConnection();
         connection.setRequestMethod("GET");
