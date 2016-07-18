@@ -1,7 +1,11 @@
 package net.askello.requesttester.controller;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import net.askello.requesttester.MainApp;
 import net.askello.requesttester.controller.control.FilesController;
 import net.askello.requesttester.controller.control.ParamsController;
@@ -38,61 +42,78 @@ public class MainController {
     private ParamsController paramsController;
     private FilesController filesController;
 
+    private ImageView preloader;
+
     private MainApp mainApp;
 
     @FXML
     public void initialize() {
         initParams();
         initFiles();
+        initPreloader();
     }
 
     @FXML
     public void runHandler() throws IOException {
-        // get params
-        HashMap<String, String> params = paramsController.getParams();
+        startPreloader();
 
-        // get request method
-        String method = paramsController.getMethod();
+        new Thread(new Task<Void>() {
+            @Override
+            protected Void call() throws Exception
+            {
 
-        // get files
-        HashMap<String, File> files = filesController.getFiles();
 
-        Response response = null;
-        if(method.equals("GET")) {
-            response = Request.GET(url.getText(), params);
-        }
-        else if(method.equals("POST") && files.size()==0) {
-            //response = Request.POST(url.getText(), params);
-            response = Request.MULTIPART(url.getText(), params, new HashMap<>());
-        }
-        else if(method.equals("POST") && files.size()>0) {
-            response = Request.MULTIPART(url.getText(), params, files);
-        }
+                // get params
+                HashMap<String, String> params = paramsController.getParams();
 
-        // print response json
-        try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-            JsonParser jp = new JsonParser();
-            JsonElement je = jp.parse(response.getContent());
-            jsonArea.setText(gson.toJson(je));
-        } catch (Exception e) {
-            jsonArea.setText(response.getContent());
-        }
+                // get request method
+                String method = paramsController.getMethod();
 
-        // print cookies
-        cookiesArea.clear();
-        for(Cookie cookie : response.getCookies()) {
-            cookiesArea.appendText(cookie.toString() + '\n');
-        }
+                // get files
+                HashMap<String, File> files = filesController.getFiles();
 
-        // print full response
-        fullResponseArea.clear();
-        for(Param header : response.getHeaders()) {
-            if(header.getKey()!=null)
-                fullResponseArea.appendText(header.getKey() + ": " + header.getValue() + '\n');
-            else fullResponseArea.appendText(header.getValue() + '\n');
-        }
-        fullResponseArea.appendText('\n' + response.getContent());
+                Response response = null;
+                if(method.equals("GET")) {
+                    response = Request.GET(url.getText(), params);
+                }
+                else if(method.equals("POST") && files.size()==0) {
+                    //response = Request.POST(url.getText(), params);
+                    response = Request.MULTIPART(url.getText(), params, new HashMap<>());
+                }
+                else if(method.equals("POST") && files.size()>0) {
+                    response = Request.MULTIPART(url.getText(), params, files);
+                }
+
+                // print response json
+                try {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+                    JsonParser jp = new JsonParser();
+                    JsonElement je = jp.parse(response.getContent());
+                    jsonArea.setText(gson.toJson(je));
+                } catch (Exception e) {
+                    jsonArea.setText(response.getContent());
+                }
+
+                // print cookies
+                cookiesArea.clear();
+                for(Cookie cookie : response.getCookies()) {
+                    cookiesArea.appendText(cookie.toString() + '\n');
+                }
+
+                // print full response
+                fullResponseArea.clear();
+                for(Param header : response.getHeaders()) {
+                    if(header.getKey()!=null)
+                        fullResponseArea.appendText(header.getKey() + ": " + header.getValue() + '\n');
+                    else fullResponseArea.appendText(header.getValue() + '\n');
+                }
+                fullResponseArea.appendText('\n' + response.getContent());
+
+                stopPreloader();
+
+                return null;
+            }
+        }).start();
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -102,7 +123,7 @@ public class MainController {
     }
 
     private void initParams() {
-        FXMLLoader paramsPane = new FXMLLoader(getClass().getResource("../view/control/params.fxml"));
+        FXMLLoader paramsPane = new FXMLLoader(MainApp.class.getResource("view/control/params.fxml"));
 
         try {
             Parent view = paramsPane.load();
@@ -114,7 +135,7 @@ public class MainController {
     }
 
     private void initFiles() {
-        FXMLLoader paramsPane = new FXMLLoader(getClass().getResource("../view/control/files.fxml"));
+        FXMLLoader paramsPane = new FXMLLoader(MainApp.class.getResource("view/control/files.fxml"));
 
         try {
             Parent view = paramsPane.load();
@@ -123,6 +144,27 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initPreloader() {
+        preloader = new ImageView(new Image("/files/preloader.gif"));
+    }
+
+    private void startPreloader() {
+        runButton.setText("");
+        runButton.setGraphic(preloader);
+    }
+
+    private void stopPreloader() {
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                runButton.setText("Run");
+                runButton.setGraphic(null);
+            }
+        });
     }
 
 }

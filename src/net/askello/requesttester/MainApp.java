@@ -1,5 +1,6 @@
 package net.askello.requesttester;
 
+import javafx.scene.image.Image;
 import net.askello.requesttester.controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ public class MainApp extends Application {
         MainController controller = loader.getController();
         controller.setMainApp(this);
 
+        primaryStage.getIcons().add(new Image("/files/rocket.png"));
         primaryStage.setTitle("Request Tester");
         primaryStage.setScene(new Scene(personOverview));
         primaryStage.show();
