@@ -80,7 +80,7 @@ public class MultipartRequest extends Request {
     }
 
     public void finish() throws IOException {
-        writer.append(CRLF).append("--").append(boundary).append("--")
+        writer.append("--").append(boundary).append("--")
                 .append(CRLF);
         writer.close();
     }

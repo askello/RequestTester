@@ -1,5 +1,7 @@
 package net.askello.requesttester.library.request;
 
+import net.askello.requesttester.library.response.Response;
+
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
@@ -11,9 +13,10 @@ public abstract class Request {
 
     protected URL url;
     protected HashMap<String, String> params;
+    protected HashMap<String, String> cookies;
     protected HashMap<String, File> files;
 
-    protected String response;
+    protected Response response;
 
     protected String charset;
 
@@ -34,7 +37,7 @@ public abstract class Request {
         setUrl(new URL(link));
     }
 
-    public String getResponse() {
+    public Response getResponse() {
         return response;
     }
 
@@ -54,6 +57,24 @@ public abstract class Request {
 
     public void setParams(HashMap<String, String> params) {
         this.params = params;
+    }
+
+    public void addCookie(String key, String value) {
+        cookies.put(key, value);
+    }
+
+    public void addCookie(String key, int value) {
+        addCookie(key, String.valueOf(value));
+    }
+
+    public void addCookies(HashMap<String, String> cookies) {
+        for(String key : cookies.keySet()) {
+            addCookie(key, cookies.get(key));
+        }
+    }
+
+    public void setCookies(HashMap<String, String> cookies) {
+        this.cookies = cookies;
     }
 
     public void addFile(String key, File file) {
@@ -86,7 +107,7 @@ public abstract class Request {
         sendData();
 
         // get response from server
-        readResponse();
+        response = new Response(connection);
     }
 
     protected void setUpConnection() throws IOException {
@@ -98,16 +119,6 @@ public abstract class Request {
     }
 
     protected abstract void sendData() throws IOException;
-
-    public void readResponse() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-        String inputData = "", line = null;
-        while ((line = in.readLine()) != null)
-            inputData += line;
-        in.close();
-
-        this.response = inputData;
-    }
 
     public String encodeMapToUrl(HashMap<String, String> data) throws IOException {
         String encodedString = "";
@@ -127,7 +138,7 @@ public abstract class Request {
         return encodedString;
     }
 
-    public static String GET(String url, HashMap<String, String> params) throws IOException {
+    public static Response GET(String url, HashMap<String, String> params) throws IOException {
         Request request = new GetRequest();
         request.setUrl(url);
         request.setParams(params);
@@ -135,7 +146,7 @@ public abstract class Request {
         return request.getResponse();
     }
 
-    public static String POST(String url, HashMap<String, String> params) throws IOException {
+    public static Response POST(String url, HashMap<String, String> params) throws IOException {
         Request request = new PostRequest();
         request.setUrl(url);
         request.setParams(params);
@@ -143,7 +154,7 @@ public abstract class Request {
         return request.getResponse();
     }
 
-    public static String MULTIPART(String url, HashMap<String, String> params, HashMap<String, File> files) throws IOException {
+    public static Response MULTIPART(String url, HashMap<String, String> params, HashMap<String, File> files) throws IOException {
         Request request = new MultipartRequest();
         request.setUrl(url);
         request.setParams(params);
