@@ -1,5 +1,7 @@
 package net.askello.requesttester.library.request;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
+import net.askello.requesttester.library.common.Cookie;
 import net.askello.requesttester.library.response.Response;
 
 import java.io.*;
@@ -13,8 +15,9 @@ public abstract class Request {
 
     protected URL url;
     protected HashMap<String, String> params;
-    protected HashMap<String, String> cookies;
     protected HashMap<String, File> files;
+    protected HashMap<String, Cookie> cookies;
+    protected HashMap<String, String> headers;
 
     protected Response response;
 
@@ -25,6 +28,8 @@ public abstract class Request {
     public Request() {
         this.params = new HashMap<String, String>();
         this.files = new HashMap<String, File>();
+        this.cookies = new HashMap<String, Cookie>();
+        this.headers = new HashMap<String, String>();
 
         this.charset = "UTF-8";
     }
@@ -59,22 +64,26 @@ public abstract class Request {
         this.params = params;
     }
 
+    public void addCookie(String key, Cookie cookie) {
+        cookies.put(key, cookie);
+    }
+
     public void addCookie(String key, String value) {
-        cookies.put(key, value);
+        addCookie(key, new Cookie(key, value));
     }
 
-    public void addCookie(String key, int value) {
-        addCookie(key, String.valueOf(value));
-    }
-
-    public void addCookies(HashMap<String, String> cookies) {
+    public void addCookies(HashMap<String, Cookie> cookies) {
         for(String key : cookies.keySet()) {
             addCookie(key, cookies.get(key));
         }
     }
 
-    public void setCookies(HashMap<String, String> cookies) {
+    public void setCookies(HashMap<String, Cookie> cookies) {
         this.cookies = cookies;
+    }
+
+    public void setHeaders(HashMap<String, String> headers) {
+        this.headers = headers;
     }
 
     public void addFile(String key, File file) {
@@ -102,6 +111,10 @@ public abstract class Request {
     public void execute() throws IOException {
         // start connection
         setUpConnection();
+        setUpCookies();
+        setUpHeaders();
+
+        System.out.println(connection.getRequestProperties());
 
         // send data to server
         sendData();
@@ -112,10 +125,31 @@ public abstract class Request {
 
     protected void setUpConnection() throws IOException {
         connection = (HttpURLConnection) url.openConnection();
-        //connection.setRequestProperty("User-Agent", "Mozilla/5.0");
-        connection.setRequestProperty("Accept-Charset", charset);
         connection.setDoOutput(true);
         connection.setDoInput(true);
+    }
+
+    protected void setUpCookies() {
+        String cookieStr = new String();
+
+        boolean first = true;
+        for(Cookie cookie : cookies.values()) {
+            if(first) first = false;
+            else cookieStr += "; ";
+            cookieStr += cookie.getKey()+"="+cookie.getValue();
+        }
+
+        if(cookieStr.length()>0)
+            connection.setRequestProperty("Cookie", cookieStr);
+    }
+
+    protected void setUpHeaders() {
+        //connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setRequestProperty("Accept-Charset", charset);
+
+        for(String key : headers.keySet()) {
+            connection.setRequestProperty(key, headers.get(key));
+        }
     }
 
     protected abstract void sendData() throws IOException;
@@ -128,7 +162,7 @@ public abstract class Request {
             String key = entry.getKey();
             String value = entry.getValue();
 
-            value = URLEncoder.encode(value, "UTF-8");
+            value = URLEncoder.encode(value, charset);
 
             if(!encodedString.equals(""))
                 encodedString += "&";
@@ -161,6 +195,12 @@ public abstract class Request {
         request.setFiles(files);
         request.execute();
         return request.getResponse();
+    }
+
+    public static Request createRequest(String method, boolean withFiles) {
+        if(method.equals("GET")) return new GetRequest();
+        else if(method.equals("POST") && withFiles) return new MultipartRequest();
+        else return new PostRequest();
     }
 
 }

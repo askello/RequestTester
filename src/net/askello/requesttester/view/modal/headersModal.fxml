@@ -9,10 +9,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="250.0" style="-fx-padding: 15;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.askello.requesttester.controller.modal.ParamsModalController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="140.0" prefWidth="250.0" style="-fx-padding: 15;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.askello.requesttester.controller.modal.HeadersModalController">
   <columnConstraints>
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="50.0" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="87.0" minWidth="10.0" prefWidth="62.0" />
+    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="172.0" minWidth="10.0" prefWidth="158.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -30,12 +30,12 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="keyField" onAction="#save" GridPane.columnIndex="1" />
-      <TextField fx:id="valueField" onAction="#save" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Button layoutX="101.0" layoutY="6.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="69.0" text="save" />
+            <Button fx:id="saveButton" layoutX="89.0" layoutY="5.0" mnemonicParsing="false" onAction="#save" prefHeight="25.0" prefWidth="69.0" text="save" />
          </children>
       </Pane>
+      <TextField fx:id="valueField" onAction="#save" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ComboBox fx:id="keyComboBox" prefWidth="160.0" GridPane.columnIndex="1" />
    </children>
 </GridPane>

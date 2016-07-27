@@ -1,4 +1,4 @@
-package net.askello.requesttester.library;
+package net.askello.requesttester.library.common;
 
 import java.io.File;
 

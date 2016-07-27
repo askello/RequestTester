@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="600.0" style="-fx-background-color: #cecece;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.askello.requesttester.controller.control.CookiesController">
+   <children>
+      <Button fx:id="addCookieButton" layoutX="502.0" layoutY="3.0" mnemonicParsing="false" onAction="#addCookieButtonHandler" prefHeight="25.0" prefWidth="84.0" text="add" />
+      <Button fx:id="editCookieButton" layoutX="502.0" layoutY="39.0" mnemonicParsing="false" onAction="#editCookieButtonHandler" prefHeight="25.0" prefWidth="84.0" text="edit" />
+      <Button fx:id="removeCookieButton" layoutX="502.0" layoutY="75.0" mnemonicParsing="false" onAction="#removeCookieButtonHandler" prefHeight="25.0" prefWidth="84.0" text="remove" />
+      <ScrollPane layoutX="14.0" layoutY="3.0" prefHeight="152.0" prefWidth="472.0">
+         <content>
+            <TableView fx:id="cookiesTable" prefHeight="135.0" prefWidth="778.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <columns>
+                  <TableColumn fx:id="keyColumn" prefWidth="75.0" text="key" />
+                  <TableColumn fx:id="valueColumn" prefWidth="75.0" text="value" />
+                  <TableColumn fx:id="maxAgeColumn" prefWidth="75.0" text="Max-Age" />
+                  <TableColumn fx:id="expiresColumn" prefWidth="75.0" text="expired" />
+                  <TableColumn fx:id="pathColumn" prefWidth="75.0" text="path" />
+                  <TableColumn fx:id="domainColumn" prefWidth="75.0" text="domain" />
+                  <TableColumn fx:id="httpOnlyColumn" prefWidth="75.0" text="HttpOnly" />
+                  <TableColumn fx:id="secureColumn" prefWidth="75.0" text="secure" />
+               </columns>
+            </TableView>
+         </content>
+      </ScrollPane>
+      <CheckBox fx:id="useReceivedCheckbox" layoutX="502.0" layoutY="130.0" mnemonicParsing="false" selected="true" text="Use received" />
+      <CheckBox fx:id="useCookiesCheckbox" layoutX="502.0" layoutY="108.0" mnemonicParsing="false" selected="true" text="Use cookies" />
+   </children>
+</AnchorPane>

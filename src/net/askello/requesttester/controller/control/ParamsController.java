@@ -15,7 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.askello.requesttester.MainApp;
 import net.askello.requesttester.controller.modal.ParamsModalController;
-import net.askello.requesttester.library.Param;
+import net.askello.requesttester.library.common.Param;
 
 import java.io.IOException;
 import java.util.HashMap;

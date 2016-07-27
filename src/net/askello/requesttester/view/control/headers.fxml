@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="673.0" style="-fx-background-color: #cecece;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.askello.requesttester.controller.control.HeadersController">
+   <children>
+      <TableView fx:id="headersTable" layoutX="14.0" layoutY="3.0" prefHeight="150.0" prefWidth="372.0">
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+         <columns>
+            <TableColumn fx:id="keyHeaderColumn" prefWidth="138.0" text="key" />
+            <TableColumn fx:id="valueHeaderColumn" prefWidth="232.0" text="value" />
+         </columns>
+      </TableView>
+      <Button fx:id="addHeaderButton" layoutX="398.0" layoutY="3.0" mnemonicParsing="false" onAction="#addHeaderButtonHandler" prefHeight="25.0" prefWidth="84.0" text="add" />
+      <Button fx:id="editHeaderButton" layoutX="398.0" layoutY="39.0" mnemonicParsing="false" onAction="#editHeaderButtonHandler" prefHeight="25.0" prefWidth="84.0" text="edit" />
+      <Button fx:id="removeHeaderButton" layoutX="398.0" layoutY="75.0" mnemonicParsing="false" onAction="#removeHeaderButtonHandler" prefHeight="25.0" prefWidth="84.0" text="remove" />
+   </children>
+</AnchorPane>

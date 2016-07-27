@@ -1,14 +1,13 @@
 package net.askello.requesttester.library.response;
 
-import net.askello.requesttester.library.Cookie;
-import net.askello.requesttester.library.Param;
+import net.askello.requesttester.library.common.Cookie;
+import net.askello.requesttester.library.common.Param;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by askello on 15.07.2016.
@@ -70,6 +69,11 @@ public class Response {
                 cookies.add(new Cookie(headerValue));
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return content;
     }
 
 }

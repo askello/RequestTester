@@ -45,12 +45,12 @@
             </Tab>
           <Tab text="Cookies">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #cecece;" />
+                <fx:include fx:id="cookies" source="control/cookies.fxml" />
             </content>
           </Tab>
             <Tab text="Headers">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="156.0" prefWidth="570.0" style="-fx-background-color: #cecece;" />
+                  <fx:include fx:id="headers" source="control/headers.fxml" />
               </content>
             </Tab>
         </tabs>

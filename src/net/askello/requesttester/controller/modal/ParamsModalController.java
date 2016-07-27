@@ -1,6 +1,6 @@
 package net.askello.requesttester.controller.modal;
 
-import net.askello.requesttester.library.Param;
+import net.askello.requesttester.library.common.Param;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -23,7 +23,7 @@ public class ParamsModalController {
     }
 
     @FXML
-    private void saveButtonHandler() {
+    private void save() {
         if(keyField.getText().length()>0 && valueField.getText().length()>0) {
             param = new Param(keyField.getText(), valueField.getText());
         }
@@ -34,6 +34,7 @@ public class ParamsModalController {
         if(param != null) {
             keyField.setText(param.getKey());
             valueField.setText(param.getValue());
+            valueField.requestFocus();
         }
     }
 
